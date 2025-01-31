@@ -6,7 +6,8 @@ function ExpenseForm({ addTransaction }) {
     const [expenseInfo, setExpenseInfo] = useState({
         amount: '',
         text: '',
-        type: '' // Add the type field
+        type: '',
+        date: ''  // New field for date
     });
 
     const handleChange = (e) => {
@@ -18,8 +19,8 @@ function ExpenseForm({ addTransaction }) {
 
     const addExpenses = (e) => {
         e.preventDefault();
-        const { amount, text, type } = expenseInfo;
-        if (!amount || !text || !type) {
+        const { amount, text, type, date } = expenseInfo;
+        if (!amount || !text || !type || !date) {  // Check if date is provided
             handleError('Please add all Expense Details');
             return;
         }
@@ -37,7 +38,7 @@ function ExpenseForm({ addTransaction }) {
 
         // Add transaction with positive or negative amount based on type
         addTransaction({ ...expenseInfo, amount: finalAmount });
-        setExpenseInfo({ amount: '', text: '', type: '' }); // Reset the fields
+        setExpenseInfo({ amount: '', text: '', type: '', date: '' }); // Reset the fields
     }
 
     return (
@@ -80,6 +81,15 @@ function ExpenseForm({ addTransaction }) {
                         <option value='Salary'>Salary</option>    {/* Income */}
                         <option value='Tip'>Tip</option>          {/* Income */}
                     </select>
+                </div>
+                <div>
+                    <label htmlFor='date'>Date</label>
+                    <input
+                        onChange={handleChange}
+                        type='date'
+                        name='date'
+                        value={expenseInfo.date}
+                    />
                 </div>
                 <button type='submit'>Add Expense</button>
             </form>

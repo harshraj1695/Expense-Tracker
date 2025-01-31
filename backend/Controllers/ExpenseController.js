@@ -2,7 +2,7 @@ const UserModel = require("../Models/User");
 
 const addTransaction = async (req, res) => {
     const { _id } = req.user;
-    const { text, amount, type } = req.body; // Destructure the new 'type' field
+    const { text, amount, type, date } = req.body; // Destructure the new 'date' field
 
     // Check if all required fields are provided
     if (!text || !amount || !type) {
@@ -12,10 +12,13 @@ const addTransaction = async (req, res) => {
         });
     }
 
+    // If no date is provided, use the current date
+    const transactionDate = date ? new Date(date) : new Date();
+
     try {
         const userData = await UserModel.findByIdAndUpdate(
             _id,
-            { $push: { expenses: { text, amount, type } } }, // Add 'type' in the expense object
+            { $push: { expenses: { text, amount, type, date: transactionDate } } }, // Add 'date' in the expense object
             { new: true } // To return the updated document
         );
         

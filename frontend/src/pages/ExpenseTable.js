@@ -14,6 +14,15 @@ const ExpenseTable = ({ expenses, deleteExpens }) => {
                         className="expense-amount"
                         style={{ color: expense.amount > 0 ? '#27ae60' : '#c0392b' }}
                     >₹{expense.amount}</div>
+                    <div className="expense-date">
+                        {/* Formatting the date */}
+                        {new Date(expense.date).toLocaleDateString('en-IN', { 
+                            weekday: 'short', 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric' 
+                        })}
+                    </div>
                 </div>
             ))}
         </div>

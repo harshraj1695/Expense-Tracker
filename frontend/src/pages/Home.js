@@ -175,60 +175,60 @@ const pieChartData = {
 };
 
 
-    return (
-        <div className="home-container">
-            <div className="user-section">
-                <h1>Welcome {loggedInUser}</h1>
-                <button onClick={handleLogout}>Logout</button>
+   return (
+    <div className="home-container">
+        <div className="user-section">
+            <h1>Welcome {loggedInUser}</h1>
+            <button onClick={handleLogout}>Logout</button>
+        </div>
+
+        {/* First Row: Expense Form & Expense Table */}
+        <div className="row">
+            <div className="column">
+                <h2>Add Expense</h2>
+                <ExpenseForm addTransaction={addTransaction} />
             </div>
-
-            <div className="content-container">
-                {/* Left Section: Income vs Expenses Graph */}
-                <div className="graph-section">
-                    <h2>Income vs Expenses</h2>
-                    <Bar data={chartData} />
-                </div>
-
-                {/* Right Section: Expense Type Pie Chart */}
-                {Object.keys(expenseTypes).length > 0 && (
-                    <div className="pie-chart-section">
-                        <h2>Expense Type Distribution</h2>
-                        <Pie data={pieChartData} />
+            <div className="column">
+                <h2>Expense Table</h2>
+                {loading ? (
+                    <div>Loading...</div>
+                ) : (
+                    <ExpenseTable
+                        expenses={expenses}
+                        deleteExpens={(id) => {
+                            setExpenseToDelete(id);
+                            setShowConfirmation(true);
+                        }}
+                    />
+                )}
+                {showConfirmation && (
+                    <div className="confirmation-popup">
+                        <p>Are you sure you want to delete this expense?</p>
+                        <button onClick={deleteExpens}>Yes</button>
+                        <button onClick={() => setShowConfirmation(false)}>No</button>
                     </div>
                 )}
-
-                {/* Middle Section: Expense Details and Form */}
-                <div className="form-section">
-                    <ExpenseDetails incomeAmt={incomeAmt} expenseAmt={expenseAmt} />
-                    <ExpenseForm addTransaction={addTransaction} />
-                </div>
-
-                {/* Right Section: Expense Table */}
-                <div className="table-section">
-                    {loading ? (
-                        <div>Loading...</div>
-                    ) : (
-                        <ExpenseTable
-                            expenses={expenses}
-                            deleteExpens={(id) => {
-                                setExpenseToDelete(id);
-                                setShowConfirmation(true);
-                            }}
-                        />
-                    )}
-                    {showConfirmation && (
-                        <div className="confirmation-popup">
-                            <p>Are you sure you want to delete this expense?</p>
-                            <button onClick={deleteExpens}>Yes</button>
-                            <button onClick={() => setShowConfirmation(false)}>No</button>
-                        </div>
-                    )}
-                </div>
             </div>
-
-            <ToastContainer />
         </div>
-    );
+
+        {/* Second Row: Bar Graph & Pie Chart */}
+        <div className="row">
+            <div className="column">
+                <h2>Income vs Expenses</h2>
+                <Bar data={chartData} />
+            </div>
+            {Object.keys(expenseTypes).length > 0 && (
+                <div className="column">
+                    <h2>Expense Type Distribution</h2>
+                    <Pie data={pieChartData} />
+                </div>
+            )}
+        </div>
+
+        <ToastContainer />
+    </div>
+);
+
 }
 
 export default Home;
